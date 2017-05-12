@@ -1,5 +1,15 @@
 # Crawler 一个简易的爬虫框架#
 ---
+现已加入maven中央仓库
+使用  
+现已加入maven中央仓库（search.maven.org）
+添加maven依赖：  
+
+    `<dependency>
+        groupId>com.arloor</groupId>
+        <artifactId>EasyCrawler</artifactId>
+        <version>1.0.1</version>
+      </dependency>`
 
 ## 功能 ##
  :)这个readme针对第一版本 。               
