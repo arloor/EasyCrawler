@@ -31,10 +31,14 @@ import java.util.Map;
  * Created by arloor on 17-5-7.
  */
 
+/**
+ * todo:需要线程封闭
+ */
+
 public class MyHttpClient {
-    private CloseableHttpClient client;
-    private long waittime;
-    private int retryNum;
+    private final CloseableHttpClient client;
+    private final long waittime;
+    private final int retryNum;
     //用于保存获取的cookie，每访问一个网页都会通过setcookie方法增加新的cookie
     private Map<String, String> cookieMap = new HashMap<String, String>(64);
     private CloseableHttpResponse response;
@@ -175,6 +179,7 @@ public class MyHttpClient {
             addCookie(response);
             System.out.println("请求后的Cookie:" + getCookie());
             HttpEntity responseEntity = response.getEntity();
+
             Thread.sleep(waittime);//线程等待waittime
             System.out.println("\n\n\n");
             return responseEntity;
@@ -225,7 +230,7 @@ public class MyHttpClient {
     }
 
 
-    public void clearCoookie() {
+    public void clearCookie() {
         cookieMap.clear();
     }
 

@@ -1,4 +1,4 @@
-# Crawler 一个简易的爬虫框架#
+# Crawler 一个简易的可复用的爬虫组件#
 ---
 现已加入maven中央仓库
 使用  
@@ -8,21 +8,24 @@
     `<dependency>
         groupId>com.arloor</groupId>
         <artifactId>EasyCrawler</artifactId>
-        <version>1.0.1</version>
+        <version>1.1.0</version>
       </dependency>`
 
 ## 功能 ##
- :)这个readme针对第一版本 。               
+ :)这个readme针对[第三版本]。               
  项目目前封装了httpclient和jsoup。            
  支持https，针对一般的反爬虫做了一些处理。                               
- 专门为模拟登陆做过优化，在项目中有两个demo，分别是模拟登陆moontell.cn(自己的网站)和github.com。             
+ （当前版本去除）专门为模拟登陆做过优化，在项目中有两个demo，分别是模拟登陆moontell.cn(自己的网站)和github.com。             
+ 新增：NCBI网站的Demo，这个demo使用了一次LinearGraber,使用了一次ConcurrentGraber。     
  只需要将根目录下的jar/EasyCrawler.jar放进项目的lib即可使用
  
 ## 关键类说明： ##
 
  Graber
  ------
- 这个类封装了HttpCLient，负责发送请求,接收响应。首先说一下Graber的各个属性。       
+ 这个接口是download模块的中心类。针对链式和并发的请求有两个实现，分别是LinearGraber和ConcurrenceGraber。
+ 
+ 这个类封装了HttpClient，负责发送请求,接收响应。首先说一下Graber的各个属性。       
 
  RequestEntity：请求的实体。对要请求的网页的一个封装，包含请求的URI，请求的Method，如果是POST,则还包含postData（POST传递的数据）。这个类下面有详细介绍                                                                                                                                                                                                                                                                                                                                                                         
 
@@ -34,9 +37,10 @@
 
  add(RequestEntity):增加Grab任务中要请求的实体。实体一旦增加，将会在Graber范围内有效，直到调用`Graber.clearRequestList()`。                 
 
- grab():开始一次Grab任务。       
- stop():所有Grab任务完成后调用，作用是关闭client和response。重要：在所有任务的最后必须要调用此方法。             
- getClient():获得MyHttpClient，进而可以直接使用MyHttpClient的方法。一般不需要是用，因为Graber类已经封装了大部分。      
+ grab():开始一次Grab任务。     
+ 在Graber的两个不同实现中，grab方法不一样，一个采取链式请求，另一个采取多线程并发的访问结构相同的网址。       
+       
+ close():所有Grab任务完成后调用，作用是关闭client和response。重要：在所有任务的最后必须要调用此方法。             
 
 RequestEntity
 -------------
@@ -49,7 +53,7 @@ MyHttpClient
 -------------
 创建方法：可使用的参数：waitTime，retryTime：分别是为减慢爬取速度的等待时间，爬取失败的重试次数。创建方法中还实现了一种简单粗暴的https支持，这个不好意思说，不说。          
 cookieMap：储存cookie键值对的map                
-response：CloseableHttpResponse的实例，将在调用Graber.stop()时关闭。                        
+response：CloseableHttpResponse的实例，将在调用Graber.close()时关闭。                        
 其他方法：是进行请求的实现。说明：调用get或者post会发起get或者Post请求。过程中会增加cookie。返回一个HttpEntity（response的封装）。如果不需要定制MyHttpClient，不需要深入研究。             
 
 Parser
@@ -58,16 +62,11 @@ Parser
 在使用中需要创建这个类的子类，并且添加自定义的方法进行解析。            
 看代码之后你就会发现他很简陋（其实是Jsoup已经很强大了，都不需要怎么封装）。            
  
- 
- 
-## demo：
-以GithubDemo为例        
-
-唉，不想写了                   
+                    
 
   
  
  
 
 
-  [1]: https://github.com/arloor/Crawler/tree/bc9a00ad55cb9643dbb137892193ae400f01beaf
+  [第三版本]: https://github.com/arloor/Crawler/tree/bc9a00ad55cb9643dbb137892193ae400f01beaf

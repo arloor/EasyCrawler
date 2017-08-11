@@ -7,7 +7,7 @@
     <description>an easy crawler with httpclient4.5 and jsoup</description>
     <groupId>com.arloor</groupId>
     <artifactId>EasyCrawler</artifactId>
-    <version>1.0.1</version>
+    <version>1.1.0</version>
     <packaging>jar</packaging>
     <url>https://github.com/arloor/EasyCrawler</url>
     <licenses>
